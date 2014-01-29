@@ -64,6 +64,10 @@
     <option name="gradleHome" value="C:/Program Files (x86)/Gradle/gradle-1.0-rc-3" />
   </component>
   <component name="IdProvider" IDEtalkID="D5303FE0F0581CBE7129B6835644D27B" />
+  <component name="JRebel Project data">
+    <option name="privateKey" value="3082025c020100028181008a86fd0376a629a445e921c919f4030b316f1d0021d9085b5506662c421f14864d6ad2f823e1ce4e8b33fb530af9343c98b6eb7c0a6469587405b6a0d63bee54a726fc235172afb06a5884bebedc31c0db853953ce533a1c57db7078b9288aeb90b863dcb894c658ddc7619aa9ca4553ad72f7d37011db19699a8809c470d54902030100010281803ea4745dd095ab5701d63ed4f5cb8664d561edb75597135459ca9f017c95196ef22b5063adb63ad901d1ebe0cda18ba1ab5d6c77972b7907eacf7a9a98c6592b7c20051048e2a2ebda7a520b5eb0fe355d270fbfb08d23431b1e305f7256194e805ff7beb25ffee6723734ef2f7fe1695ea295f5f4748ec53cea7ca57b421f51024100c79ab01d19222f0c85f5c5612d73dadd915f7ac1c042d8b01d6d12d5d774ca7716b7165b75b06223856d17d1cc88ec54142e506dc5c2818ec4ef834625d4e087024100b1aa9fb53f18991dd0e9f27d1baf0f8d0d4bf3a770bd2df8cd566403acaf66b77e79c081e6449bfd5c3e2b761b6c646cae46ca7f748642afd31313d44f2d1faf024100aeff8dfc54f6c56d235d90c95c4240d7150732e6ff9b1bc37c690ea4711bb20eaad9a63e557668f45f9c7fcfae95352d99ebe913f4d84d2250c2f4c2e1943bad0240331e0c657189fa4401dfcdcd0132151f583c0a169af15350ca8398b315f441717a0a3dc122278b5a123830f9025ae569ff9a8e98ad4613d9d2b922736b74683102404bb254f3d615a122d3e2f8d3983a600526df15537f25b1efd90d7a98428726a59d7acd61475b2993bfcc66147b000824832eada278ed3e49ab3a102603504097" />
+    <option name="publicKey" value="308189028181008a86fd0376a629a445e921c919f4030b316f1d0021d9085b5506662c421f14864d6ad2f823e1ce4e8b33fb530af9343c98b6eb7c0a6469587405b6a0d63bee54a726fc235172afb06a5884bebedc31c0db853953ce533a1c57db7078b9288aeb90b863dcb894c658ddc7619aa9ca4553ad72f7d37011db19699a8809c470d5490203010001" />
+  </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
     <option name="OPTION_SCOPE" value="protected" />
@@ -213,6 +217,9 @@
       </item>
     </group>
   </component>
+  <component name="ProjectKey">
+    <option name="state" value="https://github.com/vramdal/documentation-maven-plugin.git" />
+  </component>
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/documentation-maven-plugin.iml" filepath="$PROJECT_DIR$/documentation-maven-plugin.iml" />
@@ -223,23 +230,6 @@
   </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-  </component>
-  <component name="atlassian-ide-plugin-workspace">
-    <option name="bambooConfiguration">
-      <BambooWorkspaceConfiguration>
-        <option name="view">
-          <BambooViewConfigurationBean />
-        </option>
-      </BambooWorkspaceConfiguration>
-    </option>
-    <option name="defaultCredentials">
-      <UserCfgBean />
-    </option>
-  </component>
-  <component name="atlassian-ide-plugin-workspace-issues">
-    <option name="view">
-      <JiraViewConfigurationBean />
-    </option>
   </component>
   <component name="libraryTable">
     <library name="Maven: aopalliance:aopalliance:1.0">
@@ -275,17 +265,6 @@
         <root url="jar://$MAVEN_REPOSITORY$/com/google/guava/guava/10.0.1/guava-10.0.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: eu.henkelmann:actuarius_2.10.0:0.2.6">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/eu/henkelmann/actuarius_2.10.0/0.2.6/actuarius_2.10.0-0.2.6.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/eu/henkelmann/actuarius_2.10.0/0.2.6/actuarius_2.10.0-0.2.6-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/eu/henkelmann/actuarius_2.10.0/0.2.6/actuarius_2.10.0-0.2.6-sources.jar!/" />
-      </SOURCES>
-    </library>
     <library name="Maven: javax.annotation:jsr250-api:1.0">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.jar!/" />
@@ -317,6 +296,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/javax/inject/javax.inject/1/javax.inject-1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: net.sourceforge.collections:collections-generic:4.01">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/sourceforge/collections/collections-generic/4.01/collections-generic-4.01.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/net/sourceforge/collections/collections-generic/4.01/collections-generic-4.01-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/sourceforge/collections/collections-generic/4.01/collections-generic-4.01-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.apache.maven.plugin-tools:maven-plugin-annotations:3.2">
@@ -473,6 +463,17 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/codehaus/plexus/plexus-utils/2.0.6/plexus-utils-2.0.6-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: org.commonjava.googlecode.markdown4j:markdown4j:2.2-cj-1.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/commonjava/googlecode/markdown4j/markdown4j/2.2-cj-1.0/markdown4j-2.2-cj-1.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/commonjava/googlecode/markdown4j/markdown4j/2.2-cj-1.0/markdown4j-2.2-cj-1.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/commonjava/googlecode/markdown4j/markdown4j/2.2-cj-1.0/markdown4j-2.2-cj-1.0-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: org.eclipse.sisu:org.eclipse.sisu.inject:0.0.0.M5">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/sisu/org.eclipse.sisu.inject/0.0.0.M5/org.eclipse.sisu.inject-0.0.0.M5.jar!/" />
@@ -493,17 +494,6 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/sisu/org.eclipse.sisu.plexus/0.0.0.M5/org.eclipse.sisu.plexus-0.0.0.M5-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: org.scala-lang:scala-library:2.10.0">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.10.0/scala-library-2.10.0.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.10.0/scala-library-2.10.0-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.10.0/scala-library-2.10.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.sonatype.aether:aether-api:1.13.1">
