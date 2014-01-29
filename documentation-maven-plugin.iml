@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -44,8 +44,8 @@
     <orderEntry type="library" name="Maven: org.sonatype.aether:aether-impl:1.13.1" level="project" />
     <orderEntry type="library" name="Maven: org.sonatype.sisu:sisu-inject-plexus:2.3.0" level="project" />
     <orderEntry type="library" name="Maven: org.sonatype.sisu:sisu-inject-bean:2.3.0" level="project" />
-    <orderEntry type="library" name="Maven: eu.henkelmann:actuarius_2.10.0:0.2.6" level="project" />
-    <orderEntry type="library" name="Maven: org.scala-lang:scala-library:2.10.0" level="project" />
+    <orderEntry type="library" name="Maven: org.commonjava.googlecode.markdown4j:markdown4j:2.2-cj-1.0" level="project" />
+    <orderEntry type="library" name="Maven: net.sourceforge.collections:collections-generic:4.01" level="project" />
   </component>
 </module>
 
