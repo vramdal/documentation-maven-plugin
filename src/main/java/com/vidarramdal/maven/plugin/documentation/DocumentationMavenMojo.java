@@ -15,6 +15,7 @@ import org.markdown4j.Markdown4jProcessor;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Stack;
 
 @Mojo( name = "sayhi", inheritByDefault = false)
 public class DocumentationMavenMojo extends AbstractMojo {
@@ -45,6 +46,7 @@ public class DocumentationMavenMojo extends AbstractMojo {
 
 	private Markdown4jProcessor markdown4jProcessor = new Markdown4jProcessor();
     private File _outputDir;
+	private Stack<File> templateStack = new Stack<>();
 
     /**
      * Says "Hi" to the user.
@@ -73,7 +75,7 @@ public class DocumentationMavenMojo extends AbstractMojo {
                 if (!parentOutputDir.exists() && !parentOutputDir.mkdirs()) {
                     throw new MojoExecutionException("Unable to create directory " + parentOutputDir.getAbsolutePath());
                 }
-                processDirectory(documentationRootDir, parentOutputDir);
+                processDirectory(documentationRootDir, parentOutputDir, template);
             } catch (Throwable e) {
                 throw new MojoExecutionException("Error creating documentation", e);
             }
@@ -88,7 +90,11 @@ public class DocumentationMavenMojo extends AbstractMojo {
         }
     }
 
-    private void processDirectory(File inputDir, File parentOutputDir) throws IOException {
+    private void processDirectory(File inputDir, File parentOutputDir, File template) throws IOException {
+		File templateFile = new File(inputDir, "template.xsl");
+		if (templateFile.exists()) {
+			template = templateFile;
+		}
 		final File[] files = inputDir.listFiles();
 		if (files == null) {
 			throw new RuntimeException("Could not get files from " + inputDir.getAbsolutePath());
@@ -100,7 +106,7 @@ public class DocumentationMavenMojo extends AbstractMojo {
 				if (!mkdirResult) {
 					throw new RuntimeException("Could not create directory " + targetFile.getAbsolutePath());
 				}
-				processDirectory(file, targetFile);
+				processDirectory(file, targetFile, template);
 			} else if ("md".equals(FileUtils.extension(file.getName()))) {
 				String html = markdown4jProcessor.process(file);
                 File htmlFile = new File(parentOutputDir, FileUtils.removeExtension(file.getName()) + ".html");
