@@ -10,12 +10,21 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
 import org.markdown4j.Markdown4jProcessor;
 
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.List;
-import java.util.Stack;
 
 @Mojo( name = "sayhi", inheritByDefault = false)
 public class DocumentationMavenMojo extends AbstractMojo {
@@ -46,9 +55,9 @@ public class DocumentationMavenMojo extends AbstractMojo {
 
 	private Markdown4jProcessor markdown4jProcessor = new Markdown4jProcessor();
     private File _outputDir;
-	private Stack<File> templateStack = new Stack<>();
+	private TransformerFactory factory;
 
-    /**
+	/**
      * Says "Hi" to the user.
      *
      */
@@ -62,10 +71,17 @@ public class DocumentationMavenMojo extends AbstractMojo {
         if (!this._outputDir.exists() && !this._outputDir.mkdirs()) {
             throw new MojoExecutionException("Could not create directory " + this._outputDir.getAbsolutePath());
         }
-        processProject(project);
+		final InputStream templateStream = this.getClass().getResourceAsStream("/default.xsl");
+		factory = TransformerFactory.newInstance();
+		Source xslt = new StreamSource(templateStream);
+		try {
+			processProject(project, xslt);
+		} finally {
+   			IOUtil.close(templateStream);
+		}
 	}
 
-    private void processProject(final MavenProject project) throws MojoExecutionException {
+    private void processProject(final MavenProject project, final Source defaultTemplate) throws MojoExecutionException {
         File documentationRootDir = getAbsoluteDirectory(project.getBasedir(), this.documentationRoot, "documentationRoot");
         getLog().info("Processing documentation for " + project.getName() );
         getLog().info("Fetching documentation files from " + documentationRootDir.getAbsolutePath());
@@ -75,7 +91,7 @@ public class DocumentationMavenMojo extends AbstractMojo {
                 if (!parentOutputDir.exists() && !parentOutputDir.mkdirs()) {
                     throw new MojoExecutionException("Unable to create directory " + parentOutputDir.getAbsolutePath());
                 }
-                processDirectory(documentationRootDir, parentOutputDir, template);
+                processDirectory(documentationRootDir, parentOutputDir, defaultTemplate);
             } catch (Throwable e) {
                 throw new MojoExecutionException("Error creating documentation", e);
             }
@@ -85,15 +101,25 @@ public class DocumentationMavenMojo extends AbstractMojo {
         List<MavenProject> collectedProjects = project.getCollectedProjects();
         for (MavenProject collectedProject : collectedProjects) {
             if (collectedProject.getParent().equals(project)) { // Only process children - not deeper descendants
-                processProject(collectedProject);
+                processProject(collectedProject, defaultTemplate);
             }
         }
     }
 
-    private void processDirectory(File inputDir, File parentOutputDir, File template) throws IOException {
+	private String transform(Source xslt, String html) throws TransformerException {
+		Transformer transformer = factory.newTransformer(xslt);
+		Source text = new StreamSource(new StringReader(html));
+		final StringWriter writer = new StringWriter();
+		transformer.transform(text, new StreamResult(writer));
+		return writer.toString();
+	}
+
+    private void processDirectory(File inputDir, File parentOutputDir, final Source parentTemplate) throws IOException, TransformerException {
+		Source template = parentTemplate;
 		File templateFile = new File(inputDir, "template.xsl");
 		if (templateFile.exists()) {
-			template = templateFile;
+			getLog().info("Using template " + templateFile.getAbsolutePath() + " for transformation");
+			template = new StreamSource(templateFile);
 		}
 		final File[] files = inputDir.listFiles();
 		if (files == null) {
@@ -107,8 +133,11 @@ public class DocumentationMavenMojo extends AbstractMojo {
 					throw new RuntimeException("Could not create directory " + targetFile.getAbsolutePath());
 				}
 				processDirectory(file, targetFile, template);
+			} else if ("template.xsl".equals(file.getName())) {
+				// Skip
 			} else if ("md".equals(FileUtils.extension(file.getName()))) {
 				String html = markdown4jProcessor.process(file);
+				html = transform(template, html);
                 File htmlFile = new File(parentOutputDir, FileUtils.removeExtension(file.getName()) + ".html");
 				FileUtils.fileWrite(htmlFile, "UTF-8", html);
 			} else {
