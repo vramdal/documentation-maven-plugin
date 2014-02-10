@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Mojo( name = "sayhi", inheritByDefault = false)
@@ -56,6 +57,7 @@ public class DocumentationMavenMojo extends AbstractMojo {
 	private Markdown4jProcessor markdown4jProcessor = new Markdown4jProcessor();
     private File _outputDir;
 	private TransformerFactory factory;
+    private List<TransformJob> transformQueue = new ArrayList<>();
 
 	/**
      * Says "Hi" to the user.
@@ -76,7 +78,10 @@ public class DocumentationMavenMojo extends AbstractMojo {
 		Source xslt = new StreamSource(templateStream);
 		try {
 			processProject(project, xslt);
-		} finally {
+            for (TransformJob transformJob : transformQueue) {
+                transformJob.transform();
+            }
+        } finally {
    			IOUtil.close(templateStream);
 		}
 	}
@@ -106,17 +111,10 @@ public class DocumentationMavenMojo extends AbstractMojo {
         }
     }
 
-	private String transform(Source xslt, String html) throws TransformerException {
-		Transformer transformer = factory.newTransformer(xslt);
-		Source text = new StreamSource(new StringReader(html));
-		final StringWriter writer = new StringWriter();
-		transformer.transform(text, new StreamResult(writer));
-		return writer.toString();
-	}
-
     private void processDirectory(File inputDir, File parentOutputDir, final Source parentTemplate) throws IOException, TransformerException {
 		Source template = parentTemplate;
 		File templateFile = new File(inputDir, "template.xsl");
+        getLog().info("Looking for " + templateFile.getAbsolutePath());
 		if (templateFile.exists()) {
 			getLog().info("Using template " + templateFile.getAbsolutePath() + " for transformation");
 			template = new StreamSource(templateFile);
@@ -136,11 +134,10 @@ public class DocumentationMavenMojo extends AbstractMojo {
 			} else if ("template.xsl".equals(file.getName())) {
 				// Skip
 			} else if ("md".equals(FileUtils.extension(file.getName()))) {
-				String html = markdown4jProcessor.process(file);
-				html = transform(template, html);
+				String html = "<body>" + markdown4jProcessor.process(file) + "</body>";
                 File htmlFile = new File(parentOutputDir, FileUtils.removeExtension(file.getName()) + ".html");
-				FileUtils.fileWrite(htmlFile, "UTF-8", html);
-			} else {
+                transformQueue.add(new TransformJob(html, template, htmlFile));
+            } else {
 				FileUtils.copyFile(file, targetFile);
 			}
 		}
@@ -171,4 +168,42 @@ public class DocumentationMavenMojo extends AbstractMojo {
 		return absoluteOrRelative;
 	}
 
+    public class TransformJob {
+
+        private String html;
+        private Source template;
+        private File outputFile;
+
+        public TransformJob(String html, Source template, File outputFile) {
+            this.html = html;
+            this.template = template;
+            this.outputFile = outputFile;
+        }
+
+        private void transform() throws MojoExecutionException {
+            try {
+                Transformer transformer = factory.newTransformer(template);
+                Source text = new StreamSource(new StringReader(html));
+                final StringWriter writer = new StringWriter();
+                transformer.transform(text, new StreamResult(writer));
+                FileUtils.fileWrite(outputFile, "UTF-8", html);
+            } catch (TransformerException e) {
+                throw new MojoExecutionException("TransformerException transforming HTML to " + outputFile.getAbsolutePath(), e);
+            } catch (IOException e) {
+                throw new MojoExecutionException("IOException transforming HTML to " + outputFile.getAbsolutePath(), e);
+            }
+        }
+
+        public String getHtml() {
+            return html;
+        }
+
+        public Source getTemplate() {
+            return template;
+        }
+
+        public File getOutputFile() {
+            return outputFile;
+        }
+    }
 }

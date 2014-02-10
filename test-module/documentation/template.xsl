@@ -15,9 +15,16 @@
 				<title><xsl:value-of select="$doctitle"/></title>
 			</head>
 			<body>
-				<xsl:copy-of select="$content"/>
+				<xsl:apply-templates select="body/*"/>
 			</body>
 	    </html>
 	</xsl:template>
+
+    <xsl:template match="*">
+        <xsl:copy>
+            <xsl:copy-of select="attribute::*"/>
+            <xsl:apply-templates/>
+        </xsl:copy>
+    </xsl:template>
 
 </xsl:stylesheet>
